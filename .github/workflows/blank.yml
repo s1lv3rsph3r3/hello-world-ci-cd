@@ -42,7 +42,7 @@ jobs:
         run: wget https://github.com/digitalocean/doctl/releases/download/v1.57.0/doctl-1.57.0-linux-amd64.tar.gz
 
       - name: Unpackage the bundle
-        run: tar xf ~/doctl-1.57.0-linux-amd64.tar.gz
+        run: /bin/tar xf ~/doctl-1.57.0-linux-amd64.tar.gz
 
       - name: Move to our user bin
         run: sudo mv ~/doctl /usr/local/bin
