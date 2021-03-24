@@ -2,7 +2,7 @@
 
 name: CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
@@ -34,3 +34,28 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      - name: Change into home directory.
+        run: cd ~
+
+      - name: Get the doctl packages required for our installation
+        run: wget https://github.com/digitalocean/doctl/releases/download/v1.57.0/doctl-1.57.0-linux-amd64.tar.gz
+
+      - name: Unpackage the bundle
+        run: tar xf ~/doctl-1.57.0-linux-amd64.tar.gz
+
+      - name: Move to our user bin
+        run: sudo mv ~/doctl /usr/local/bin
+
+      - name: Initialise the auth context giving the API name
+      - shell: bash
+          env:
+            TESTING_DEPLOYMENT_KEY: ${{ secrets.TESTING_DEPLOYMENT_KEY }}
+          run: |
+            echo "$TESTING_DEPLOYMENT_KEY" | doctl auth init --context testing-deployment
+
+      - name: Switch the auth context
+        run: doctl auth switch --context testing-deployment
+
+      - name: Run a command to deploy a newly created droplet
+        run: doctl compute droplet create --image ubuntu-20-04-x64 --size s-1vcpu-1gb --region fra1 testing-deployed-droplet
