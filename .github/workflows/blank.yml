@@ -40,10 +40,10 @@ jobs:
           sudo mv ~/doctl /usr/local/bin
 
       - name: Using secrets action
-          env:
-            SUPER_SECRET: ${{ secrets.TESTING_DEPLOYMENT_KEY }}
-          run: |
-            echo "$SUPER_SECRET"
-            echo "$SUPER_SECRET" | doctl auth init --context testing-deployment
-            doctl auth switch --context testing-deployment
-            doctl compute droplet create --image ubuntu-20-04-x64 --size s-1vcpu-1gb --region fra1 testing-deployed-droplet
+        env:
+          SUPER_SECRET: ${{ secrets.TESTING_DEPLOYMENT_KEY }}
+        run: |
+          echo "$SUPER_SECRET"
+          echo "$SUPER_SECRET" | doctl auth init --context testing-deployment
+          doctl auth switch --context testing-deployment
+          doctl compute droplet create --image ubuntu-20-04-x64 --size s-1vcpu-1gb --region fra1 testing-deployed-droplet
