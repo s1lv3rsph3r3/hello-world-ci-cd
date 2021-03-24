@@ -38,6 +38,12 @@ jobs:
           wget https://github.com/digitalocean/doctl/releases/download/v1.57.0/doctl-1.57.0-linux-amd64.tar.gz
           tar xf ~/doctl-1.57.0-linux-amd64.tar.gz
           sudo mv ~/doctl /usr/local/bin
-          echo "${{ secrets.TESTING_DEPLOYMENT_KEY }}" | doctl auth init --context testing-deployment
-          doctl auth switch --context testing-deployment
-          doctl compute droplet create --image ubuntu-20-04-x64 --size s-1vcpu-1gb --region fra1 testing-deployed-droplet
+
+      - name: Using secrets action
+          env:
+            SUPER_SECRET: ${{ secrets.TESTING_DEPLOYMENT_KEY }}
+            run: |
+              echo "$SUPER_SECRET"
+              echo "$SUPER_SECRET" | doctl auth init --context testing-deployment
+              doctl auth switch --context testing-deployment
+              doctl compute droplet create --image ubuntu-20-04-x64 --size s-1vcpu-1gb --region fra1 testing-deployed-droplet
