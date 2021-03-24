@@ -48,11 +48,7 @@ jobs:
         run: sudo mv ~/doctl /usr/local/bin
 
       - name: Initialise the auth context giving the API name
-      - shell: bash
-          env:
-            TESTING_DEPLOYMENT_KEY: ${{ secrets.TESTING_DEPLOYMENT_KEY }}
-          run: |
-            echo "$TESTING_DEPLOYMENT_KEY" | doctl auth init --context testing-deployment
+        run: echo "${{ secrets.TESTING_DEPLOYMENT_KEY }}" | doctl auth init --context testing-deployment
 
       - name: Switch the auth context
         run: doctl auth switch --context testing-deployment
