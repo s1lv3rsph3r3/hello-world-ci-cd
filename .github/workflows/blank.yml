@@ -43,7 +43,20 @@ jobs:
         env:
           SUPER_SECRET: ${{ secrets.TESTING_DEPLOYMENT_KEY }}
         run: |
-          echo "$SUPER_SECRET"
-          echo "$SUPER_SECRET" | doctl auth init --context testing-deployment
-          doctl auth switch --context testing-deployment
-          doctl compute droplet create --image ubuntu-20-04-x64 --size s-1vcpu-1gb --region fra1 testing-deployed-droplet
+          echo "Got here"
+  deploy:
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        node: [ '14' ]
+    name: Node ${{ matrix.node }} sample
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm install
+      - run: node droplet-creation.js
+        env:
+          DO_AUTH_TOKEN: ${{ secrets.DO_AUTH_TOKEN }}
