@@ -62,10 +62,14 @@ jobs:
       - name: Verify Terraform version
         run: terraform --version
       - name: Terraform init
-        run: terraform init -input=false
+        run: |
+          cd terraform-deploy
+          terraform init -input=false
 
       - name: Terraform validation
-        run: terraform validate
+        run: |
+          cd terraform-deploy
+          terraform validate
 
       - name: Terraform plan
         run: terraform plan -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa"
