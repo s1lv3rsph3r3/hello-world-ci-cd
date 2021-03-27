@@ -72,10 +72,14 @@ jobs:
           terraform validate
 
       - name: Terraform plan
-        run: terraform plan -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa"
+        run: |
+          cd terraform-deploy
+          terraform plan -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa"
 
       - name: Terraform apply
-        run: terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa"
+        run: |
+          cd terraform-deploy
+          terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa"
 
   deploy:
     needs: [terraform]
