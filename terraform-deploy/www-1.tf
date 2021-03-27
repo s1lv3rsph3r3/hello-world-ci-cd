@@ -4,11 +4,14 @@ resource "digitalocean_droplet" "www-1" {
   region = "fra1"
   size = "s-1vcpu-1gb"
   private_networking = true
-  ssh_keys = null
+  ssh_keys = [
+    29902027
+  ]
   connection {
     host = self.ipv4_address
     user = "root"
     type = "ssh"
+    private_key = var.pvt_key
     timeout = "2m"
   }
   provisioner "remote-exec" {

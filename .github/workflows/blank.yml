@@ -79,7 +79,7 @@ jobs:
       - name: Terraform apply
         run: |
           cd terraform-deploy
-          echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa"
+          echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}"
 
   deploy:
     needs: [terraform]

@@ -13,3 +13,7 @@ variable "pvt_key" {}
 provider "digitalocean" {
   token = var.do_token
 }
+
+data "digitalocean_ssh_key" "enigma-ssh" {
+  name = "enigma-ssh"
+}
