@@ -61,14 +61,20 @@ jobs:
           sudo mv terraform /usr/local/bin/
       - name: Verify Terraform version
         run: terraform --version
+      - name: Change into terrafor dir
+        run: cd terraform-deploy
       - name: Terraform init
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: terraform init -input=false
 
       - name: Terraform validation
         run: terraform validate
+
+      - name: Terraform plan
+        run: terraform plan -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa"
+
+      - name: Terraform apply
+        run: terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa"
+
   deploy:
     needs: [terraform]
     runs-on: ubuntu-20.04
