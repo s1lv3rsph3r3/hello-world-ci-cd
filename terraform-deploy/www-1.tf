@@ -5,10 +5,10 @@ resource "digitalocean_droplet" "www-1" {
   size = "s-1vcpu-1gb"
   private_networking = true
   tags = [
-    'web',
-    'console',
-    'system',
-    'release.x.y.z'
+    "web",
+    "console",
+    "system",
+    "release.x.y.z"
   ]
   ssh_keys = [
     29902027
