@@ -8,7 +8,7 @@ resource "digitalocean_droplet" "www-1" {
     "web",
     "console",
     "system",
-    "release.x.y.z"
+    "zebra"
   ]
   ssh_keys = [
     29902027
