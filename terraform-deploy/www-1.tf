@@ -4,6 +4,12 @@ resource "digitalocean_droplet" "www-1" {
   region = "fra1"
   size = "s-1vcpu-1gb"
   private_networking = true
+  tags = [
+    "web",
+    "console",
+    "system",
+    "zebra"
+  ]
   ssh_keys = [
     29902027
   ]
