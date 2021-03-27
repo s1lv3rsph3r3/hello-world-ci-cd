@@ -53,7 +53,7 @@ jobs:
       - name: Install terraform
         env:
           TERRAFORM_VERSION: "0.12.15"
-      - run: |
+        run: |
           tf_version=$TERRAFORM_VERSION
           wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
           unzip terraform_"$tf_version"_linux_amd64.zip
