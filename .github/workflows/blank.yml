@@ -61,8 +61,6 @@ jobs:
           sudo mv terraform /usr/local/bin/
       - name: Verify Terraform version
         run: terraform --version
-      - name: Change into terrafor dir
-        run: cd terraform-deploy
       - name: Terraform init
         run: terraform init -input=false
 
