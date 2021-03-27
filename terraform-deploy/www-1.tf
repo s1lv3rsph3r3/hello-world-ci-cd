@@ -4,9 +4,7 @@ resource "digitalocean_droplet" "www-1" {
   region = "nyc2"
   size = "s-1vcpu-1gb"
   private_networking = true
-  ssh_keys = [
-    data.digitalocean_ssh_key.terraform.id
-  ]
+  ssh_keys = null
   connection {
     host = self.ipv4_address
     user = "root"
