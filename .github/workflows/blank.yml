@@ -79,7 +79,7 @@ jobs:
           cd terraform-deploy
           mkdir /home/runner/.ssh
           echo "${{ secrets.DO_SSH_PRIV }}" > /home/runner/.ssh/priv_key_test
-          chmod 600 /home/runner/.ssh/github_actions
+          chmod 600 /home/runner/.ssh/priv_key_test
           echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "/home/runner/.ssh/priv_key_test"
 
       - name: Clean .ssh files
