@@ -31,7 +31,6 @@
     name: "{{ remote_user }}"
     groups: www-data
     append: yes
-    become: yes
 
 - name: Set authorized key for remote user
   authorized_key:
