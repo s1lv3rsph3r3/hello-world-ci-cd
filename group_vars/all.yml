@@ -4,18 +4,18 @@ remote_user: sammy
 
 # MySQL Setup
 mysql_root_password: MYSQL_ROOT_PASSWORD
-mysql_app_db: travellist
-mysql_app_user: travellist_user
+mysql_app_db: packetpigeon
+mysql_app_user: packetpigeon
 mysql_app_pass: DB_PASSWORD
 
 # Web Server Setup
 http_host: "{{ ansible_facts.eth0.ipv4.address }}"
 remote_www_root: /var/www
-app_root_dir: travellist-demo
+app_root_dir: packetpigeon
 document_root: "{{ remote_www_root }}/{{ app_root_dir }}/public"
 
 # Laravel Env Variables
-app_name: Travellist
+app_name: "Packet Pigeon"
 app_env: dev
 app_debug: true
 app_url: "http://{{ http_host }}"
