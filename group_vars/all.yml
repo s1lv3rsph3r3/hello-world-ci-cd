@@ -15,7 +15,7 @@ app_root_dir: packetpigeon
 document_root: "{{ remote_www_root }}/{{ app_root_dir }}/public"
 
 # Laravel Env Variables
-app_name: "Packet Pigeon"
+app_name: "PacketPigeon"
 app_env: dev
 app_debug: true
 app_url: "http://{{ http_host }}"
