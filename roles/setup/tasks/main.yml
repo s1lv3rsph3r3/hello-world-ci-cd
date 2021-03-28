@@ -26,6 +26,13 @@
     create_home: true
     shell: /bin/bash
 
+- name: adding existing user "{{ remote_user }}" to group sudo
+  user:
+    name: "{{ remote_user }}"
+    groups: www-data
+    append: yes
+    become: yes
+
 - name: Set authorized key for remote user
   authorized_key:
     user: "{{ remote_user }}"
