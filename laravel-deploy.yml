@@ -69,6 +69,8 @@
       command: "/usr/bin/php {{ remote_www_root }}/{{ app_root_dir }}/artisan storage:link"
       tags: [ 'laravel', 'artisan:storage' ]
 
-    - name: Run Migrations + Seeders
-      command: "/usr/bin/php {{ remote_www_root }}/{{ app_root_dir }}/artisan migrate --seed"
-      tags: [ 'laravel', 'artisan:migrate' ]
+      # Need to include npm run production to compile assets
+
+#    - name: Run Migrations + Seeders
+#      command: "/usr/bin/php {{ remote_www_root }}/{{ app_root_dir }}/artisan migrate --seed"
+#      tags: [ 'laravel', 'artisan:migrate' ]
