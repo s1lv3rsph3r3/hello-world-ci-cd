@@ -18,13 +18,6 @@
         owner: "{{ remote_user }}"
         group: "{{ remote_user }}"
 
-    - name: Make sure the remote app vendor directory exists and has the right permissions
-      file:
-        path: "{{ remote_www_root }}/{{ app_root_dir }}/composer.lock"
-        state: file
-        mode: '0755'
-        owner: "{{ remote_user }}"
-        group: "{{ remote_user }}"
 
     - name: Rsync application files to the remote server
       synchronize:
@@ -33,6 +26,14 @@
         rsync_opts:
           - "--no-motd"
           - "--exclude=.git,vendor,tests,storage/logs/*,storage/framework/sessions/*,storage/framework/cache/*"
+
+    - name: Make sure the remote app vendor directory exists and has the right permissions
+      file:
+        path: "{{ remote_www_root }}/{{ app_root_dir }}/composer.lock"
+        state: file
+        mode: '0755'
+        owner: "{{ remote_user }}"
+        group: "{{ remote_user }}"
 
     - name: Set up additional directory permissions for www-data user on storage folder
       acl:
