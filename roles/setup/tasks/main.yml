@@ -26,7 +26,7 @@
     create_home: true
     shell: /bin/bash
 
-- name: adding existing user "{{ remote_user }}" to group sudo
+- name: adding existing user "{{ remote_user }}" to group www-data
   user:
     name: "{{ remote_user }}"
     groups: www-data
