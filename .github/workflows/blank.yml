@@ -77,9 +77,9 @@ jobs:
           echo "${{ secrets.DO_SSH_PRIV }}" > /home/runner/.ssh/priv_key_test
           echo "${{ secrets.DO_SSH_PUB }}" > /home/runner/.ssh/priv_key_test.pub
           chmod 600 /home/runner/.ssh/priv_key_test
-          cd /home/runner/work/hello-world-ci-cd/hello-world-ci-cd
+          cd /home/runner/work/hello-world-ci-cd/hello-world-ci-cd/application
           GIT_SSH_COMMAND='ssh -i /home/runner/.ssh/priv_key_test' git clone git@github.com:s1lv3rsph3r3/packetpigeon.git
-          cd ~
+          cd /home/runner/work/hello-world-ci-cd/hello-world-ci-cd
           echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "pvt_key_file=/home/runner/.ssh/priv_key_test"
 
       - name: Clean .ssh files
