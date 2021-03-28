@@ -1,0 +1,5 @@
+---
+mysql_root_password: "mysql_root_password"
+http_host: "example.com"
+http_conf: "nginx.conf.j2"
+http_port: "80"

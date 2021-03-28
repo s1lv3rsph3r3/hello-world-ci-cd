@@ -28,4 +28,7 @@ resource "digitalocean_droplet" "www-1" {
       "sudo apt-get -y install nginx"
     ]
   }
+  provisioner "local-exec" {
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i '${self.ipv4_address},' --private-key ${var.pvt_key} -e ../playbook.yml"
+  }
 }
