@@ -31,6 +31,14 @@ resource "digitalocean_droplet" "www-1" {
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i '${self.ipv4_address},' --private-key ${var.pvt_key_file} ../server-setup.yml"
   }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo fallocate -l 1G /swapfile",
+      "sudo chmod 600 /swapfile",
+      "sudo mkswap /swapfile",
+      "sudo swapon /swapfile"
+    ]
+  }
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i '${self.ipv4_address},' --private-key ${var.pvt_key_file} ../laravel-deploy.yml"
   }
