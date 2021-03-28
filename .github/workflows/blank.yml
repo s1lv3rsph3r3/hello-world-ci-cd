@@ -77,7 +77,14 @@ jobs:
       - name: Terraform apply
         run: |
           cd terraform-deploy
-          echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}"
+          mkdir /home/runner/.ssh
+          echo "${{ secrets.DO_SSH_PRIV }}" > /home/runner/.ssh/priv_key_test
+          chmod 600 /home/runner/.ssh/github_actions
+          echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "/home/runner/.ssh/priv_key_test"
+
+      - name: Clean .ssh files
+        run: |
+          rm -rf /home/runner/.ssh
 
   deploy:
     needs: [terraform]
