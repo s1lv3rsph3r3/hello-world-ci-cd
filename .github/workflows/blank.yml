@@ -85,3 +85,7 @@ jobs:
       - name: Clean .ssh files
         run: |
           rm -rf /home/runner/.ssh
+
+      - name: Show tfstate file if exists
+        run: |
+          cat terraform.tfstate
