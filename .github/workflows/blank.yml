@@ -82,4 +82,4 @@ jobs:
           cd "$GITHUB_WORKSPACE/terraform-deploy"
           echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "pvt_key_file=/home/runner/.ssh/priv_key_test"
           cd "$GITHUB_WORKSPACE/terraform-deploy"
-          la
+          ls -a
