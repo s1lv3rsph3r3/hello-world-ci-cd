@@ -67,7 +67,7 @@ jobs:
           GIT_SSH_COMMAND='ssh -i /home/runner/.ssh/priv_key_test' git clone git@github.com:s1lv3rsph3r3/packetpigeon-deployment-state.git
           ls -a
           # copy across the state file
-          cp -r "$GITHUB_WORKSPACE/packetpigeon-deployment-state/terraform.state" "$GITHUB_WORKSPACE/terraform-deploy/terraform.state"
+          cp -r "$GITHUB_WORKSPACE/packetpigeon-deployment-state/terraform.tfstate" "$GITHUB_WORKSPACE/terraform-deploy/terraform.tfstate"
           rm -rf packetpigeon-deployment-state
           cd terraform-deploy
           terraform init -input=false
