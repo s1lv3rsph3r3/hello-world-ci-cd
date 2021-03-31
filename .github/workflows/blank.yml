@@ -83,3 +83,13 @@ jobs:
           echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "pvt_key_file=/home/runner/.ssh/priv_key_test"
           cd "$GITHUB_WORKSPACE/terraform-deploy"
           ls -a
+          # Basically here we need to encrypt the terraform state file and save to a directory somewhere
+          # clone a repository that contains state
+          GIT_SSH_COMMAND='ssh -i /home/runner/.ssh/priv_key_test' git clone git@github.com:s1lv3rsph3r3/packetpigeon-deployment-state.git
+          # remove the current state
+          rm -rf packetpigeon-deployment-state/terraform.tfstate
+          # store the current state
+          cp -r terraform.tfstate packetpigeon-deployment-state/terraform.tfstate
+          cd packetpigeon-deployment-state.git
+          # push to repository
+          GIT_SSH_COMMAND='ssh -i /home/runner/.ssh/priv_key_test' git push
