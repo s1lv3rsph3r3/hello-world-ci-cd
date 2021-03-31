@@ -63,6 +63,7 @@ jobs:
           echo "${{ secrets.DO_SSH_PUB }}" > /home/runner/.ssh/priv_key_test.pub
           chmod 600 /home/runner/.ssh/priv_key_test
           # clone a repository that contains state
+          cd "$GITHUB_WORKSPACE"
           GIT_SSH_COMMAND='ssh -i /home/runner/.ssh/priv_key_test' git clone git@github.com:s1lv3rsph3r3/packetpigeon-deployment-state.git
           # copy across the state file
           cp -r packetpigeon-deployment-state/terraform.state terraform-deploy/terraform.state
