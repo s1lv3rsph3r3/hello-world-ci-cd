@@ -92,4 +92,6 @@ jobs:
           cp -r terraform.tfstate packetpigeon-deployment-state/terraform.tfstate
           cd packetpigeon-deployment-state
           # push to repository
+          GIT_SSH_COMMAND='ssh -i /home/runner/.ssh/priv_key_test' git add terraform.tfstate
+          GIT_SSH_COMMAND='ssh -i /home/runner/.ssh/priv_key_test' git commit -m "Update the terraform.tfstate"
           GIT_SSH_COMMAND='ssh -i /home/runner/.ssh/priv_key_test' git push
