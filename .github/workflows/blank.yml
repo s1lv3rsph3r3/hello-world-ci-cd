@@ -72,6 +72,7 @@ jobs:
           cd terraform-deploy
           terraform init -input=false
           terraform validate
+          terraform plan -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa"
           echo "yes" | terraform destroy -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "pvt_key_file=/home/runner/.ssh/priv_key_test"
           rm -rf terraform.state
 
