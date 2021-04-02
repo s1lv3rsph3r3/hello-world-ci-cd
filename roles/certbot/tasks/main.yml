@@ -1,0 +1,18 @@
+---
+- name: Setup snapd
+  shell: snap install core
+
+- name: Refresh snap core
+  shell: snap refresh core
+
+- name: Install classic certbot
+  shell: snap install --classic certbot
+
+- name: Link executable
+  shell: ln -s /snap/bin/certbot /usr/bin/certbot
+
+- name: Create nginx certificates only
+  shell: certbot certonly --nginx
+
+- name: Dry run renew
+  shell: certbot renew --dry-run

@@ -22,8 +22,8 @@
   notify: Reload Nginx
 
 # UFW Configuration
-- name: "UFW - Allow HTTP on port {{ http_port }}"
+- name: "UFW - Allow HTTP on port {{ https_port }}"
   ufw:
     rule: allow
-    port: "{{ http_port }}"
+    port: "{{ https_port }}"
     proto: tcp
