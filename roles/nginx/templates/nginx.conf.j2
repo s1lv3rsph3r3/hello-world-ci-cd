@@ -2,7 +2,6 @@ server {
     listen [::]:{{ https_port }} ssl ipv6only=on;
     listen {{ https_port }} ssl;
     server_name {{ http_host }} www.{{ http_host }};
-    server_name {{ http_host }};
     root {{ document_root }};
 
     add_header X-Frame-Options "SAMEORIGIN";
