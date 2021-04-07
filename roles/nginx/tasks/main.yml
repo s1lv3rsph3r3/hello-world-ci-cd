@@ -2,6 +2,20 @@
 - name: Install Nginx
   apt: name=nginx update_cache=yes state=latest
 
+- name: install letsencrypt
+  apt: name=letsencrypt state=latest
+
+- name: create letsencrypt directory
+  file: name=/var/www/letsencrypt state=directory
+
+#- name: Remove default nginx config
+#  file: name=/etc/nginx/sites-enabled/default state=absent
+
+#- name: Install system nginx config
+#  template:
+#    src: templates/nginx.conf.j2
+#    dest: /etc/nginx/nginx.conf
+
 # Nginx Configuration
 - name: Sets Nginx conf file
   template:
@@ -20,6 +34,30 @@
     path: "/etc/nginx/sites-enabled/default"
     state: absent
   notify: Reload Nginx
+
+- name: Reload nginx to activate letsencrypt site
+  service: name=nginx state=restarted
+
+- name: Create letsencrypt certificate
+  shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ http_conf }}
+  args:
+    creates: /etc/letsencrypt/live/{{ http_conf }}
+
+- name: Generate dhparams
+  shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
+  args:
+    creates: /etc/nginx/dhparams.pem
+
+- name: Reload nginx to activate specified site
+  service: name=nginx state=restarted
+
+- name: Add letsencrypt cronjob for cert renewal
+  cron:
+    name: letsencrypt_renewal
+    special_time: weekly
+    job: letsencrypt --renew certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ http_conf }}
+  notify: Reload Nginx
+
 
 # UFW Configuration
 - name: "UFW - Allow HTTP on port {{ https_port }}"
