@@ -91,10 +91,6 @@
         name: nodejs
         state: present
 
-    - name: Which DIRR?
-      command: "ls -l"
-      tags: [ 'where:am:i' ]
-
     - name: NPM install
       command: "npm install"
       args:
