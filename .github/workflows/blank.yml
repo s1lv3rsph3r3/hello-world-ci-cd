@@ -73,8 +73,8 @@ jobs:
 #          cd terraform-deploy
 #          terraform init -input=false
 #          terraform validate
-#          terraform plan -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa" -var "{{ secrets.CLOUDFLARE_TOKEN }}" -var "{{ secrets.CLOUDFLARE_ZONE_ID }}"
-#          echo "yes" | terraform destroy -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "pvt_key_file=/home/runner/.ssh/priv_key_test" -var "{{ secrets.CLOUDFLARE_TOKEN }}" -var "{{ secrets.CLOUDFLARE_ZONE_ID }}"
+#          terraform plan -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa" -var "cloudflare_token{{ secrets.CLOUDFLARE_TOKEN }}" -var "cloudflare_zone_id={{ secrets.CLOUDFLARE_ZONE_ID }}"
+#          echo "yes" | terraform destroy -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "pvt_key_file=/home/runner/.ssh/priv_key_test" -var "cloudflare_token={{ secrets.CLOUDFLARE_TOKEN }}" -var "cloudflare_zone_id={{ secrets.CLOUDFLARE_ZONE_ID }}"
 #          rm -rf terraform.state
 
       - name: Terraform init fresh
@@ -90,7 +90,7 @@ jobs:
       - name: Terraform plan
         run: |
           cd terraform-deploy
-          terraform plan -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa" -var "{{ secrets.CLOUDFLARE_TOKEN }}" -var "{{ secrets.CLOUDFLARE_ZONE_ID }}"
+          terraform plan -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=$HOME/.ssh/id_rsa" -var "cloudflare_token={{ secrets.CLOUDFLARE_TOKEN }}" -var "cloudflare_zone_id={{ secrets.CLOUDFLARE_ZONE_ID }}"
 
       - name: Terraform apply
         run: |
@@ -103,7 +103,7 @@ jobs:
           cd "$GITHUB_WORKSPACE/application"
           GIT_SSH_COMMAND='ssh -i /home/runner/.ssh/priv_key_test' git clone git@github.com:s1lv3rsph3r3/packetpigeon.git
           cd "$GITHUB_WORKSPACE/terraform-deploy"
-          echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "pvt_key_file=/home/runner/.ssh/priv_key_test" -var "{{ secrets.CLOUDFLARE_TOKEN }}" -var "{{ secrets.CLOUDFLARE_ZONE_ID }}"
+          echo "yes" | terraform apply -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "pvt_key_file=/home/runner/.ssh/priv_key_test" -var "cloudflare_token={{ secrets.CLOUDFLARE_TOKEN }}" -var "cloudflare_zone_id={{ secrets.CLOUDFLARE_ZONE_ID }}"
           cd "$GITHUB_WORKSPACE/terraform-deploy"
           ls -a
           # Basically here we need to encrypt the terraform state file and save to a directory somewhere
