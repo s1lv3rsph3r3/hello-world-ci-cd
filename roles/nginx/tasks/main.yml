@@ -20,12 +20,12 @@
 - name: Sets Nginx conf file
   template:
     src: "nginx.conf.j2"
-    dest: "/etc/nginx/sites-available/{{ http_conf }}"
+    dest: "/etc/nginx/sites-available/{{ http_host }}"
 
 - name: Enables new site
   file:
-    src: "/etc/nginx/sites-available/{{ http_conf }}"
-    dest: "/etc/nginx/sites-enabled/{{ http_conf }}"
+    src: "/etc/nginx/sites-available/{{ http_host }}"
+    dest: "/etc/nginx/sites-enabled/{{ http_host }}"
     state: link
   notify: Reload Nginx
 
@@ -39,14 +39,19 @@
   service: name=nginx state=restarted
 
 - name: Create letsencrypt certificate
-  shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ http_conf }}
+  shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ http_host }}
   args:
-    creates: /etc/letsencrypt/live/{{ http_conf }}
+    creates: /etc/letsencrypt/live/{{ http_host }}
 
 - name: Generate dhparams
   shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
   args:
     creates: /etc/nginx/dhparams.pem
+
+- name: Creates nginx ssl options
+  template:
+    src: "options-ssl-nginx.conf.j2"
+    dest: "/etc/letsencrypt/options-ssl-nginx.conf"
 
 - name: Reload nginx to activate specified site
   service: name=nginx state=restarted
@@ -55,7 +60,7 @@
   cron:
     name: letsencrypt_renewal
     special_time: weekly
-    job: letsencrypt --renew certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ http_conf }}
+    job: letsencrypt --renew certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ http_host }}
   notify: Reload Nginx
 
 
