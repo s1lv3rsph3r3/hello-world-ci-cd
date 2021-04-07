@@ -22,6 +22,11 @@
     src: "nginx.conf.j2"
     dest: "/etc/nginx/sites-available/{{ http_host }}"
 
+- name: Creates nginx ssl options
+  template:
+    src: "options-ssl-nginx.conf.j2"
+    dest: "/etc/letsencrypt/options-ssl-nginx.conf"
+
 - name: Enables new site
   file:
     src: "/etc/nginx/sites-available/{{ http_host }}"
@@ -47,11 +52,6 @@
   shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
   args:
     creates: /etc/nginx/dhparams.pem
-
-- name: Creates nginx ssl options
-  template:
-    src: "options-ssl-nginx.conf.j2"
-    dest: "/etc/letsencrypt/options-ssl-nginx.conf"
 
 - name: Reload nginx to activate specified site
   service: name=nginx state=restarted
