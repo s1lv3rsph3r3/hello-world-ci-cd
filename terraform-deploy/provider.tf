@@ -30,7 +30,7 @@ variable "domain" {
   default = "packetpigeon.com"
 }
 
-resource "cloudflare_record" "packetpigeon.com" {
+resource "cloudflare_record" "packetpigeon" {
   domain = var.domain
   name   = "packetpigeon.com"
   value  = digitalocean_droplet.www-1.ipv4_address
