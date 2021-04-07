@@ -10,6 +10,8 @@ terraform {
 variable "do_token" {}
 variable "pvt_key" {}
 variable "pvt_key_file" {}
+variable "cloudflare_token" {}
+variable "cloudflare_zone_id" {}
 
 provider "digitalocean" {
   token = var.do_token
@@ -17,4 +19,49 @@ provider "digitalocean" {
 
 data "digitalocean_ssh_key" "enigma-ssh" {
   name = "enigma-ssh"
+}
+
+provider "cloudflare" {
+  email = "tim.a.rawlins@gmail.com"
+  token = var.cloudflare_token
+}
+
+variable "domain" {
+  default = "packetpigeon.com"
+}
+
+resource "cloudflare_record" "packetpigeon.com" {
+  domain = var.domain
+  name   = "packetpigeon.com"
+  value  = digitalocean_droplet.www-1.ipv4_address
+  type = "A"
+  proxied = true
+  zone_id = var.cloudflare_zone_id
+}
+
+resource "cloudflare_record" "www" {
+  domain  = var.domain
+  name    = "www"
+  value   = digitalocean_droplet.www-1.ipv4_address
+  type    = "A"
+  proxied = true
+  zone_id = var.cloudflare_zone_id
+}
+
+resource "cloudflare_record" "api" {
+  domain = var.domain
+  name   = "api"
+  value  = digitalocean_droplet.www-1.ipv4_address
+  type = "A"
+  proxied = true
+  zone_id = var.cloudflare_zone_id
+}
+
+resource "cloudflare_record" "service" {
+  domain = var.domain
+  name   = "service"
+  value  = digitalocean_droplet.www-1.ipv4_address
+  type = "A"
+  proxied = true
+  zone_id = var.cloudflare_zone_id
 }

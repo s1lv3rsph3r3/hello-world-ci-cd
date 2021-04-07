@@ -69,32 +69,27 @@
       command: "/usr/bin/php {{ remote_www_root }}/{{ app_root_dir }}/artisan storage:link"
       tags: [ 'laravel', 'artisan:storage' ]
 
-      # Need to include npm run production to compile assets
-    - name: Install nodejs
-      hosts: all
-      become: true
-      tasks:
-        - name: install nodejs prerequisites
-          apt:
-            name:
-              - apt-transport-https
-              - gcc
-              - g++
-              - make
-            state: present
-        - name: add nodejs apt key
-          apt_key:
-            url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-            state: present
-        - name: add nodejs repository
-          apt_repository:
-            repo: deb https://deb.nodesource.com/node_14.x {{ ansible_lsb.codename }} main
-            state: present
-            update_cache: yes
-        - name: install nodejs
-          apt:
-            name: nodejs
-            state: present
+    - name: install nodejs prerequisites
+      apt:
+        name:
+          - apt-transport-https
+          - gcc
+          - g++
+          - make
+        state: present
+    - name: add nodejs apt key
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+        state: present
+    - name: add nodejs repository
+      apt_repository:
+        repo: deb https://deb.nodesource.com/node_14.x {{ ansible_lsb.codename }} main
+        state: present
+        update_cache: yes
+    - name: install nodejs
+      apt:
+        name: nodejs
+        state: present
 
     - name: NPM install
       become: false
