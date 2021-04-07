@@ -98,7 +98,7 @@
 
     - name: NPM run production
       become: false
-      command: "cd {{ remote_www_root }}/{{ app_root_dir }} && npm run production
+      command: "cd {{ remote_www_root }}/{{ app_root_dir }} && npm run production"
       tags: [ 'npm:production' ]
 
 #    - name: Run Migrations + Seeders
