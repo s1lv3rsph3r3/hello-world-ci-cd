@@ -91,14 +91,16 @@
         name: nodejs
         state: present
 
+    - name: Which DIRR?
+      command: "ls -l"
+      tags: [ 'where:am:i' ]
+
     - name: NPM install
-      become: false
-      command: "cd {{ remote_www_root }}/{{ app_root_dir }} && npm install"
+      command: "npm install"
       tags: [ 'npm:install' ]
 
     - name: NPM run production
-      become: false
-      command: "cd {{ remote_www_root }}/{{ app_root_dir }} && npm run production"
+      command: "npm run production"
       tags: [ 'npm:production' ]
 
 #    - name: Run Migrations + Seeders
