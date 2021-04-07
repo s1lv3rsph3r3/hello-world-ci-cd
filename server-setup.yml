@@ -8,6 +8,4 @@
 
     - { role: php, tags: ['php', 'web', 'php-fpm', 'lemp'] }
 
-    - { role: nginx, tags: ['nginx', 'web', 'http', 'lemp'] }
-
     - { role: composer, tags: ['composer'] }
