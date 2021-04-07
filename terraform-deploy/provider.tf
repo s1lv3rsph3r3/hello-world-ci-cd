@@ -35,7 +35,6 @@ variable "domain" {
 }
 
 resource "cloudflare_record" "packetpigeon" {
-  domain = var.domain
   name   = "packetpigeon.com"
   value  = digitalocean_droplet.www-1.ipv4_address
   type = "A"
@@ -44,7 +43,6 @@ resource "cloudflare_record" "packetpigeon" {
 }
 
 resource "cloudflare_record" "www" {
-  domain  = var.domain
   name    = "www"
   value   = digitalocean_droplet.www-1.ipv4_address
   type    = "A"
@@ -53,7 +51,6 @@ resource "cloudflare_record" "www" {
 }
 
 resource "cloudflare_record" "api" {
-  domain = var.domain
   name   = "api"
   value  = digitalocean_droplet.www-1.ipv4_address
   type = "A"
@@ -62,7 +59,6 @@ resource "cloudflare_record" "api" {
 }
 
 resource "cloudflare_record" "service" {
-  domain = var.domain
   name   = "service"
   value  = digitalocean_droplet.www-1.ipv4_address
   type = "A"
