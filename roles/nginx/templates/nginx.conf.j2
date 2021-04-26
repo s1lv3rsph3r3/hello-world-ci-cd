@@ -31,11 +31,6 @@ server {
     location ~ /\.(?!well-known).* {
         deny all;
     }
-
-    ssl_certificate /etc/letsencrypt/live/{{ http_host }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{ http_host }}/privkey.pem;
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/nginx/dhparams.pem;
 }
 
 server {

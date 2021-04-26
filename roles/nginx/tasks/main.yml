@@ -53,25 +53,25 @@
 #  service: name=nginx state=restarted
 
 # Need to stop the nginx service to allow for the certificate to be generated
-- name: Reload nginx to activate letsencrypt site
-  service: name=nginx state=stopped
+#- name: Reload nginx to activate letsencrypt site
+#  service: name=nginx state=stopped
+#
+#- name: Create letsencrypt certificate
+#  shell: letsencrypt certonly -n --webroot -w /var/www/packetpigeon -m {{ letsencrypt_email }} --agree-tos -d {{ http_host }}
+#  args:
+#    creates: /etc/letsencrypt/live/{{ http_host }}
 
-- name: Create letsencrypt certificate
-  shell: letsencrypt certonly -n --webroot -w /var/www/packetpigeon -m {{ letsencrypt_email }} --agree-tos -d {{ http_host }}
-  args:
-    creates: /etc/letsencrypt/live/{{ http_host }}
+#- name: Generate dhparams
+#  shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
+#  args:
+#    creates: /etc/nginx/dhparams.pem
 
-- name: Generate dhparams
-  shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
-  args:
-    creates: /etc/nginx/dhparams.pem
-
-- name: Add letsencrypt cronjob for cert renewal
-  cron:
-    name: letsencrypt_renewal
-    special_time: weekly
-    job: letsencrypt --renew certonly -n --webroot -w /var/www/packetpigeon -m {{ letsencrypt_email }} --agree-tos -d {{ http_host }}
-  notify: Reload Nginx
+#- name: Add letsencrypt cronjob for cert renewal
+#  cron:
+#    name: letsencrypt_renewal
+#    special_time: weekly
+#    job: letsencrypt --renew certonly -n --webroot -w /var/www/packetpigeon -m {{ letsencrypt_email }} --agree-tos -d {{ http_host }}
+#  notify: Reload Nginx
 
 # This needs to be removed to allow the certificate to be renewed
 - name: Reload nginx to activate specified site
