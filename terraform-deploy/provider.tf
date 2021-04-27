@@ -27,7 +27,6 @@ data "digitalocean_ssh_key" "enigma-ssh" {
 
 provider "cloudflare" {
   email = "tim.a.rawlins@gmail.com"
-  token = var.cloudflare_token
 }
 
 variable "domain" {
