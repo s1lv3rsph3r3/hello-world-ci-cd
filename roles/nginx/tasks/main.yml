@@ -20,6 +20,11 @@
 - name: Stop nginx to allow for letsencrypt
   service: name=nginx state=stopped
 
+- name: Generate dhparams
+  shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
+  args:
+    creates: /etc/nginx/dhparams.pem
+
 # install core
 - name: Install snap core
   shell: snap install core
@@ -63,7 +68,12 @@
 
 # Call on cloudflare to approve ssl cert
 - name: Certbot cloudflare create and validate certs
-  shell: sudo certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }}
+  shell: certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }}
+
+- name: Creates nginx ssl options
+  template:
+    src: "options-ssl-nginx.conf.j2"
+    dest: "/etc/letsencrypt/options-ssl-nginx.conf"
 
 #- name: Install system nginx config
 #  template:
@@ -81,7 +91,7 @@
     src: "/etc/nginx/sites-available/{{ http_host }}"
     dest: "/etc/nginx/sites-enabled/{{ http_host }}"
     state: link
-  notify: Reload Nginx
+  notify: Restart Nginx
 
 # This needs to be removed to let the certificate be created
 #- name: Reload nginx to activate letsencrypt site
