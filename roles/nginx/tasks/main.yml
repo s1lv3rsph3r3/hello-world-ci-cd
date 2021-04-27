@@ -2,12 +2,6 @@
 - name: Install Nginx
   apt: name=nginx update_cache=yes state=latest
 
-- name: install letsencrypt
-  apt: name=letsencrypt state=latest
-
-- name: create letsencrypt directory
-  file: name=/var/www/letsencrypt state=directory
-
 # This needs to be upgraded to allow the port to be open before using nginx
 # UFW Configuration
 - name: "UFW - Allow HTTP on port {{ https_port }}"
@@ -16,8 +10,60 @@
     port: "{{ https_port }}"
     proto: tcp
 
-#- name: Remove default nginx config
-#  file: name=/etc/nginx/sites-enabled/default state=absent
+- name: Removes "default" site
+  file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify: Reload Nginx
+
+# Need to stop the nginx service to allow for the certificate to be generated
+- name: Stop nginx to allow for letsencrypt
+  service: name=nginx state=stopped
+
+# install core
+- name: Install snap core
+  shell: snap install core
+
+- name: Refresh snap core
+  shell: snap refresh core
+
+# Remove default os certbot
+- name: Install snap core
+  shell: apt-get remove certbot
+
+- name: Install snap classic certbot
+  shell: snap install --classic certbot
+
+# Link certbot
+- name: Link certbot
+  shell: ln -s /snap/bin/certbot /usr/bin/certbot
+
+# Snap trust plugin
+- name: Snap trust plugin
+  shell: snap set certbot trust-plugin-with-root=ok
+
+# Snap cloudflare plugin
+- name: Snap cloudflare plugin
+  shell: snap install certbot-dns-cloudflare
+
+# mkdir secrets
+- name: Make directory secrets
+  shell: mkdir ~/.secrets
+
+# make file
+- name: Make cloudflare.ini file
+  shell: touch ~/.secrets/cloudflare.ini
+
+# Print the email to cloudflare file
+- name: Print the email to the cloudflare file
+  shell: printf "dns_cloudflare_email = {{ letsencrypt_email }}\\n" >> ~/.secrets/cloudflare.ini
+
+- name: Print the secret to the cloudflare file
+  shell: printf "dns_cloudflare_api_key = {{ dns_cloudflare_api_key }}\\n" >> ~/.secrets/cloudflare.ini
+
+# Call on cloudflare to approve ssl cert
+- name: Certbot cloudflare create and validate certs
+  shell: sudo certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }}
 
 #- name: Install system nginx config
 #  template:
@@ -30,11 +76,6 @@
     src: "nginx.conf.j2"
     dest: "/etc/nginx/sites-available/{{ http_host }}"
 
-#- name: Creates nginx ssl options
-#  template:
-#    src: "options-ssl-nginx.conf.j2"
-#    dest: "/etc/letsencrypt/options-ssl-nginx.conf"
-
 - name: Enables new site
   file:
     src: "/etc/nginx/sites-available/{{ http_host }}"
@@ -42,29 +83,14 @@
     state: link
   notify: Reload Nginx
 
-- name: Removes "default" site
-  file:
-    path: "/etc/nginx/sites-enabled/default"
-    state: absent
-  notify: Reload Nginx
-
 # This needs to be removed to let the certificate be created
 #- name: Reload nginx to activate letsencrypt site
 #  service: name=nginx state=restarted
-
-# Need to stop the nginx service to allow for the certificate to be generated
-#- name: Reload nginx to activate letsencrypt site
-#  service: name=nginx state=stopped
 #
 #- name: Create letsencrypt certificate
 #  shell: letsencrypt certonly -n --webroot -w /var/www/packetpigeon -m {{ letsencrypt_email }} --agree-tos -d {{ http_host }}
 #  args:
 #    creates: /etc/letsencrypt/live/{{ http_host }}
-
-#- name: Generate dhparams
-#  shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
-#  args:
-#    creates: /etc/nginx/dhparams.pem
 
 #- name: Add letsencrypt cronjob for cert renewal
 #  cron:
