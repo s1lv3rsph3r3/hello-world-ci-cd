@@ -30,10 +30,10 @@
     src: "nginx.conf.j2"
     dest: "/etc/nginx/sites-available/{{ http_host }}"
 
-- name: Creates nginx ssl options
-  template:
-    src: "options-ssl-nginx.conf.j2"
-    dest: "/etc/letsencrypt/options-ssl-nginx.conf"
+#- name: Creates nginx ssl options
+#  template:
+#    src: "options-ssl-nginx.conf.j2"
+#    dest: "/etc/letsencrypt/options-ssl-nginx.conf"
 
 - name: Enables new site
   file:
