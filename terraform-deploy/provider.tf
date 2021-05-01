@@ -90,6 +90,5 @@ terraform {
   backend "s3" {
     bucket = "packet-pigeon-console-terraform-state"
     key = "default-infrastructure"
-    region = var.aws_region
   }
 }
