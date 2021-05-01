@@ -73,8 +73,11 @@
 - name: Certbot cloudflare create and validate certs
   shell: certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }} --dry-run
 
+- name: install pip3
+  shell: apt install python3-pip
+
 - name: install and upgrade setup tools
-  shell: pip install --upgrade setuptools
+  shell: pip3 install --upgrade setuptools
 
 - name: Ensure boto and boto3 modules are installed
   pip:
