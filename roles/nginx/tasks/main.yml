@@ -73,8 +73,15 @@
 - name: Certbot cloudflare create and validate certs
   shell: certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }} --dry-run
 
-- name: Download file from S3 bucket
-    s3: aws_access_key="{{ aws_access_key }}" aws_secret_key="{{ aws_secret_key }}" bucket=temp-cert-store object=/cert_bundle.zip dest=~/cert_bundle.zip mode=get
+- name: Simple GET operation
+  environment:
+    AWS_ACCESS_KEY: "{{ aws_access_key }}"
+    AWS_SECRET_KEY: "{{ aws_secret_key }}"
+  amazon.aws.aws_s3:
+    bucket: temp-cert-store
+    object: /cert_bundle.zip
+    dest: ~/cert_bundle.zip
+    mode: get
 
 - name: Remove inside of letsencrypt
   shell: rm -rf /etc/letsencrypt/*
