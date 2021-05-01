@@ -47,12 +47,12 @@ variable "domain" {
   default = "packetpigeon.com"
 }
 
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "packet-pigeon-console-terraform-state"
-  versioning {
-    enabled = true
-  }
-}
+//resource "aws_s3_bucket" "terraform_state" {
+//  bucket = "packet-pigeon-console-terraform-state"
+//  versioning {
+//    enabled = true
+//  }
+//}
 
 resource "cloudflare_record" "packetpigeon" {
   name   = "packetpigeon.com"
