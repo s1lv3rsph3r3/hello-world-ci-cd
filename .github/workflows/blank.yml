@@ -77,6 +77,13 @@ jobs:
 #          echo "yes" | terraform destroy -var "do_token=${{ secrets.TESTING_DEPLOYMENT_KEY }}" -var "pvt_key=${{ secrets.DO_SSH_PRIV }}" -var "pvt_key_file=/home/runner/.ssh/priv_key_test" -var "cloudflare_token={{ secrets.CLOUDFLARE_TOKEN }}" -var "cloudflare_zone_id={{ secrets.CLOUDFLARE_ZONE_ID }}"
 #          rm -rf terraform.state
 
+      - name: Configure AWS credentials from Test account
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+            aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Terraform init fresh
         run: |
           cd terraform-deploy
