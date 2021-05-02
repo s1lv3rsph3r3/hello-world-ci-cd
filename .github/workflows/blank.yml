@@ -84,9 +84,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: lookup ssm parameter store in the current region
-        debug: msg="{{ lookup('aws_ssm', 'Hello' ) }}"
-
       - name: Terraform init fresh
         run: |
           cd terraform-deploy
