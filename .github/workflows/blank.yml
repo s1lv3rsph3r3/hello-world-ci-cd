@@ -80,12 +80,12 @@ jobs:
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          my_aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-          my_aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          aws_region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: lookup ssm parameter store using explicit aws credentials
-        debug: msg="{{ lookup('aws_ssm', 'enable_blue_env', aws_access_key={{ my_aws_access_key }}, aws_secret_key={{ my_aws_secret_key }}, decrypt=true, region='eu-west-1') }}"
+      - name: lookup ssm parameter store in the current region
+        debug: msg="{{ lookup('aws_ssm', 'Hello' ) }}"
 
       - name: Terraform init fresh
         run: |
