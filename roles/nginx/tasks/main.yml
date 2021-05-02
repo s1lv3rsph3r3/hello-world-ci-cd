@@ -4,19 +4,19 @@
 
 # This needs to be upgraded to allow the port to be open before using nginx
 # UFW Configuration
-#- name: "UFW - Allow HTTP on port {{ https_port }}"
-#  ufw:
-#    rule: allow
-#    port: "{{ https_port }}"
-#    proto: tcp
+- name: "UFW - Allow HTTP on port {{ https_port }}"
+  ufw:
+    rule: allow
+    port: "{{ https_port }}"
+    proto: tcp
 
 # TODO: Remove {{ http_port }} step and reinstate {{ https_port }} when blue green deployment is complete
 # Swap this for the above when we are ready to deploy ssl
-- name: "UFW - Allow HTTP on port {{ http_port }}"
-  ufw:
-    rule: allow
-    port: "{{ http_port }}"
-    proto: tcp
+#- name: "UFW - Allow HTTP on port {{ http_port }}"
+#  ufw:
+#    rule: allow
+#    port: "{{ http_port }}"
+#    proto: tcp
 
 - name: Removes "default" site
   file:
@@ -80,7 +80,7 @@
 # TODO: Remove --dry-run when blue/green deployment is ready
 # Call on cloudflare to approve ssl cert
 - name: Certbot cloudflare create and validate certs
-  shell: certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }} -d {{ uuid }}.{{ http_host }} --dry-run
+  shell: certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }} -d {{ uuid }}.{{ http_host }}
 
 - name: install pip3
   apt: name=python3-pip update_cache=yes state=latest
