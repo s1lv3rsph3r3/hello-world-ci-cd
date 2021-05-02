@@ -44,9 +44,9 @@ provider "cloudflare" {
   api_key = var.cloudflare_token
 }
 
-variable "domain" {
-  default = "packetpigeon.com"
-}
+//variable "domain" {
+//  default = "packetpigeon.com"
+//}
 
 //resource "aws_s3_bucket" "terraform_state" {
 //  bucket = "packet-pigeon-console-terraform-state"
@@ -54,22 +54,6 @@ variable "domain" {
 //    enabled = true
 //  }
 //}
-
-resource "cloudflare_record" "packetpigeon" {
-  name   = "packetpigeon.com"
-  value  = digitalocean_droplet.www-1.ipv4_address
-  type = "A"
-  proxied = true
-  zone_id = var.cloudflare_zone_id
-}
-
-resource "cloudflare_record" "www" {
-  name    = "www"
-  value   = digitalocean_droplet.www-1.ipv4_address
-  type    = "A"
-  proxied = true
-  zone_id = var.cloudflare_zone_id
-}
 
 //resource "cloudflare_record" "api" {
 //  name   = "api"
