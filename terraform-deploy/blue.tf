@@ -47,6 +47,7 @@ resource "cloudflare_record" "packetpigeon_blue" {
   type = "A"
   proxied = false
   zone_id = var.cloudflare_zone_id
+  ttl = "2m"
   count = 1
 }
 
@@ -56,5 +57,6 @@ resource "cloudflare_record" "www_blue" {
   type    = "A"
   proxied = false
   zone_id = var.cloudflare_zone_id
+  ttl = "2m"
   count = 1
 }
