@@ -43,7 +43,7 @@ resource "digitalocean_droplet" "blue" {
 
 resource "cloudflare_record" "packetpigeon_blue" {
   name   = "packetpigeon.com"
-  value  = digitalocean_droplet.blue.ipv4_address
+  value  = digitalocean_droplet.blue[count.index].ipv4_address
   type = "A"
   proxied = false
   zone_id = var.cloudflare_zone_id
@@ -52,7 +52,7 @@ resource "cloudflare_record" "packetpigeon_blue" {
 
 resource "cloudflare_record" "www_blue" {
   name    = "www"
-  value   = digitalocean_droplet.blue.ipv4_address
+  value   = digitalocean_droplet.blue[count.index].ipv4_address
   type    = "A"
   proxied = false
   zone_id = var.cloudflare_zone_id
