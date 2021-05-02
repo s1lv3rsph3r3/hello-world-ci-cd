@@ -48,7 +48,7 @@ resource "cloudflare_record" "packetpigeon_blue" {
   proxied = false
   zone_id = var.cloudflare_zone_id
   ttl = 120
-  count = 1
+  count = 0
 }
 
 resource "cloudflare_record" "www_blue" {
@@ -58,5 +58,5 @@ resource "cloudflare_record" "www_blue" {
   proxied = false
   zone_id = var.cloudflare_zone_id
   ttl = 120
-  count = 1
+  count = 0
 }
