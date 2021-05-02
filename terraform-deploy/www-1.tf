@@ -39,9 +39,9 @@ resource "digitalocean_droplet" "www-1" {
       "sudo swapon /swapfile"
     ]
   }
-  provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u sammy -i '${self.ipv4_address},' --private-key ${var.pvt_key_file} ../laravel-deploy.yml"
-  }
+//  provisioner "local-exec" {
+//    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u sammy -i '${self.ipv4_address},' --private-key ${var.pvt_key_file} ../laravel-deploy.yml"
+//  }
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u sammy -i '${self.ipv4_address},' --private-key ${var.pvt_key_file} ../server.yml -e \"dns_cloudflare_api_key=${var.cloudflare_token}\" -e \"aws_access_key=${var.aws_access_key}\" -e \"aws_secret_key=${var.aws_secret_key}\" -e \"do_instance_ip=${self.ipv4_address}\""
   }

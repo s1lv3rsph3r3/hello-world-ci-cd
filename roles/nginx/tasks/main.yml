@@ -84,15 +84,32 @@
     name: ['boto3', 'botocore']
   delegate_to: "{{ do_instance_ip }}"
 
-- name: Simple GET operation
-  environment:
-    AWS_ACCESS_KEY: "{{ aws_access_key }}"
-    AWS_SECRET_KEY: "{{ aws_secret_key }}"
-  amazon.aws.aws_s3:
-    bucket: temp-cert-store
-    object: /cert_bundle.zip
-    dest: ~/cert_bundle.zip
-    mode: get
+- name: Install aws cli
+  apt:  name=awscli update_cache=yes state=latest
+
+- name: pip3 install upgrade
+  shell: pip3 install --upgrade awscli
+
+- name: configure aws creds
+  shell: |
+    aws configure << ANSWERS
+    {{ aws_access_key }}
+    {{ aws_secret_key }}
+    eu-west-1
+    json
+    ANSWERS
+
+- name: Simple get operation for the bucket item
+  shell: aws s3 cp s3://temp-cert-store/cert_bundle.zip ~/
+#- name: Simple GET operation
+#  environment:
+#    AWS_ACCESS_KEY: "{{ aws_access_key }}"
+#    AWS_SECRET_KEY: "{{ aws_secret_key }}"
+#  amazon.aws.aws_s3:
+#    bucket: temp-cert-store
+#    object: /cert_bundle.zip
+#    dest: ~/cert_bundle.zip
+#    mode: get
 
 - name: Remove inside of letsencrypt
   shell: rm -rf /etc/letsencrypt/*
@@ -101,10 +118,10 @@
   shell: mkdir ~/temp_for_extract
 
 - name: Unbundle and apply cert bundle
-  shell: unzip cert_bundle.zip -d temp_for_extract
+  shell: unzip ~/cert_bundle.zip -d temp_for_extract
 
 - name: Copy over all certs
-  shell: cp -r temp_for_extract/etc/letsencrypt/* /etc/letsencrypt
+  shell: cp -r ~/temp_for_extract/etc/letsencrypt/* /etc/letsencrypt
 
 - name: Remove options stuff
   shell: rm /etc/letsencrypt/options-ssl-nginx.conf
