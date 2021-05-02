@@ -5,7 +5,7 @@ resource "digitalocean_droplet" "blue" {
   region = "fra1"
   size = "s-1vcpu-1gb"
   private_networking = true
-  tags = ["console-1.0", "blue-1.0"]
+  tags = ["console_v1_0", "blue_v1_0"]
   ssh_keys = [29902027]
   connection {
     host = self.ipv4_address
