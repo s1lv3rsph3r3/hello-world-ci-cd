@@ -1,7 +1,7 @@
 server {
     listen [::]:{{ https_port }} ssl ipv6only=on;
     listen {{ https_port }} ssl;
-    server_name {{ http_host }} www.{{ http_host }};
+    server_name {{ http_host }} www.{{ http_host }} {{ uuid }}.{{ http_host }};
     root {{ document_root }};
 
     add_header X-Frame-Options "SAMEORIGIN";
@@ -60,6 +60,19 @@ server {
     listen [::]:{{ http_port }};
 
     server_name {{ http_host }};
+
+    return 404;
+}
+
+server {
+    if ($host = {{ uuid }}.{{ http_host }} {
+        return 307 https://$host$request_uri;
+    }
+
+    listen {{ http_port }};
+    listen [::]:{{ http_port }};
+
+    server_name {{ uuid }}.{{ http_host }};
 
     return 404;
 }

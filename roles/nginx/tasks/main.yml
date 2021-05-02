@@ -71,7 +71,7 @@
 
 # Call on cloudflare to approve ssl cert
 - name: Certbot cloudflare create and validate certs
-  shell: certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }} --dry-run
+  shell: certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }} -d {{ uuid }}.{{ http_host }} --dry-run
 
 - name: install pip3
   apt: name=python3-pip update_cache=yes state=latest
@@ -99,8 +99,8 @@
     json
     ANSWERS
 
-- name: Simple get operation for the bucket item
-  shell: aws s3 cp s3://temp-cert-store/cert_bundle.zip ~/
+#- name: Simple get operation for the bucket item
+#  shell: aws s3 cp s3://temp-cert-store/cert_bundle.zip ~/
 #- name: Simple GET operation
 #  environment:
 #    AWS_ACCESS_KEY: "{{ aws_access_key }}"
@@ -111,20 +111,20 @@
 #    dest: ~/cert_bundle.zip
 #    mode: get
 
-- name: Remove inside of letsencrypt
-  shell: rm -rf /etc/letsencrypt/*
+#- name: Remove inside of letsencrypt
+#  shell: rm -rf /etc/letsencrypt/*
+#
+#- name: Make temp_for_extract
+#  shell: mkdir ~/temp_for_extract
 
-- name: Make temp_for_extract
-  shell: mkdir ~/temp_for_extract
-
-- name: Unbundle and apply cert bundle
-  shell: unzip ~/cert_bundle.zip -d temp_for_extract
-
-- name: Copy over all certs
-  shell: cp -r temp_for_extract/etc/letsencrypt/* /etc/letsencrypt
-
-- name: Remove options stuff
-  shell: rm /etc/letsencrypt/options-ssl-nginx.conf
+#- name: Unbundle and apply cert bundle
+#  shell: unzip ~/cert_bundle.zip -d temp_for_extract
+#
+#- name: Copy over all certs
+#  shell: cp -r temp_for_extract/etc/letsencrypt/* /etc/letsencrypt
+#
+#- name: Remove options stuff
+#  shell: rm /etc/letsencrypt/options-ssl-nginx.conf
 
 - name: Creates nginx ssl options
   template:
