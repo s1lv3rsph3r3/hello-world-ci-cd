@@ -71,21 +71,21 @@ resource "cloudflare_record" "www" {
   zone_id = var.cloudflare_zone_id
 }
 
-resource "cloudflare_record" "api" {
-  name   = "api"
-  value  = digitalocean_droplet.www-1.ipv4_address
-  type = "A"
-  proxied = true
-  zone_id = var.cloudflare_zone_id
-}
+//resource "cloudflare_record" "api" {
+//  name   = "api"
+//  value  = digitalocean_droplet.www-1.ipv4_address
+//  type = "A"
+//  proxied = true
+//  zone_id = var.cloudflare_zone_id
+//}
 
-resource "cloudflare_record" "service" {
-  name   = "service"
-  value  = digitalocean_droplet.www-1.ipv4_address
-  type = "A"
-  proxied = true
-  zone_id = var.cloudflare_zone_id
-}
+//resource "cloudflare_record" "service" {
+//  name   = "service"
+//  value  = digitalocean_droplet.www-1.ipv4_address
+//  type = "A"
+//  proxied = true
+//  zone_id = var.cloudflare_zone_id
+//}
 
 terraform {
   backend "s3" {

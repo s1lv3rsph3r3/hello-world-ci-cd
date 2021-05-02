@@ -71,7 +71,7 @@
 
 # Call on cloudflare to approve ssl cert
 - name: Certbot cloudflare create and validate certs
-  shell: certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }} -d {{ uuid }}.{{ http_host }} --dry-run
+  shell: certbot certonly --dns-cloudflare --dns-cloudflare-credentials ~/.secrets/cloudflare.ini --dns-cloudflare-propagation-seconds 60 -m {{ letsencrypt_email }} -n --agree-tos -d {{ http_host }} -d www.{{ http_host }} -d {{ uuid }}.{{ http_host }}
 
 - name: install pip3
   apt: name=python3-pip update_cache=yes state=latest

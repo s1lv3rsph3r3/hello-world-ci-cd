@@ -65,7 +65,7 @@ server {
 }
 
 server {
-    if ($host = {{ uuid }}.{{ http_host }} {
+    if ($host = {{ uuid }}.{{ http_host }}) {
         return 307 https://$host$request_uri;
     }
 
