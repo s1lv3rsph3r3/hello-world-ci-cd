@@ -1,5 +1,5 @@
 resource "digitalocean_droplet" "green" {
-  count = 1
+  count = lookup(local.deploying_env[var.deployment_environment].green, var.deployment_stage, 0) ? 1 : 0
   image = "ubuntu-20-04-x64"
   name = "green-version-1.0-${count.index}"
   region = "fra1"
@@ -48,7 +48,7 @@ resource "cloudflare_record" "packetpigeon_green" {
   proxied = false
   zone_id = var.cloudflare_zone_id
   ttl = 120
-  count = 0
+  count = lookup(local.deploying_env[var.deployment_environment].green, var.deployment_stage, 0) ? 1 : 0
 }
 
 resource "cloudflare_record" "www_green" {
@@ -58,5 +58,5 @@ resource "cloudflare_record" "www_green" {
   proxied = false
   zone_id = var.cloudflare_zone_id
   ttl = 120
-  count = 0
+  count = lookup(local.deploying_env[var.deployment_environment].green, var.deployment_stage, 0) ? 1 : 0
 }
