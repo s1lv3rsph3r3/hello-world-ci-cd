@@ -121,7 +121,7 @@
   shell: unzip ~/cert_bundle.zip -d temp_for_extract
 
 - name: Copy over all certs
-  shell: cp -r ~/temp_for_extract/etc/letsencrypt/* /etc/letsencrypt
+  shell: cp -r temp_for_extract/etc/letsencrypt/* /etc/letsencrypt
 
 - name: Remove options stuff
   shell: rm /etc/letsencrypt/options-ssl-nginx.conf
